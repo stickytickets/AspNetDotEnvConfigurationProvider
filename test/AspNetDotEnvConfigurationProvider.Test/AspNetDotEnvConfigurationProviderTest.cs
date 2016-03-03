@@ -19,9 +19,8 @@ namespace AspNetDotEnvConfigurationProvider.Test
 					{"Inventory:ConnectionString", "AnotherTestConnectionString"},
 					{"Inventory:Provider", "MySql"}
 				};
-
-			Console.WriteLine(Directory.GetCurrentDirectory() + "\\test.env");
-			var envConfigSrc = new AspNetDotEnvConfigurationProvider(Directory.GetCurrentDirectory() + "\\test.env");
+			
+			var envConfigSrc = new AspNetDotEnvConfigurationProvider("test.env");
 
 			envConfigSrc.Load();
 			
