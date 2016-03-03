@@ -12,29 +12,30 @@ namespace AspNetDotEnvConfigurationProvider
 	// To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
 	public class AspNetDotEnvConfigurationProvider : ConfigurationProvider
 	{
-		public string Path { get; }
-		public bool Optional { get; }
+		private readonly FileInfo _file;
 
-		public AspNetDotEnvConfigurationProvider(string path, bool optional = false)
+		public AspNetDotEnvConfigurationProvider(FileInfo file, bool optional = false)
 		{
-			if (string.IsNullOrEmpty(path))
+			if (!file.Exists)
 			{
-				throw new ArgumentException("Invalid file path", nameof(path));
+				if (optional)
+				{
+					Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+				}
+				else
+				{
+					throw new FileNotFoundException("File not found", file.FullName);
+				}
+			}
+			else
+			{
+				if (!file.Extension.Equals(".env", StringComparison.OrdinalIgnoreCase))
+				{
+					throw new ArgumentException("Invalid file", nameof(Path));
+				}
 			}
 
-			Optional = optional;
-			Path = path;
-		}
-
-		public void Load(Hashtable dic)
-		{
-			Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-			
-			foreach (DictionaryEntry entry in dic)
-			{
-				var key = SanitizeKey((string)entry.Key);
-				Data[key] = (string)entry.Value;
-			}
+			_file = file;
 		}
 
 		private string SanitizeKey(string key)
@@ -44,35 +45,14 @@ namespace AspNetDotEnvConfigurationProvider
 
 		public override void Load()
 		{
-			if (!File.Exists(Path))
-			{
-				if (Optional)
-				{
-					Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-				}
-				else
-				{
-					throw new FileNotFoundException("File not found", Path);
-				}
-			}
-			else
-			{
-				var file = new FileInfo(Path);
-
-				if (!file.Extension.Equals(".env", StringComparison.OrdinalIgnoreCase))
-				{
-					throw new ArgumentException("Invalid file", nameof(Path));
-				}
-				
-				Load(Path);
-			}
+			Load(_file);
 		}
 
-		internal void Load(string fileName)
+		internal void Load(FileInfo file)
 		{
 			var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-			foreach (var line in File.ReadAllLines(fileName))
+			foreach (var line in File.ReadAllLines(file.FullName))
 			{
 				var split = line.Split(new char[] { '=' }, 2);
 

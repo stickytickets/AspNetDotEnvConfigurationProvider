@@ -20,7 +20,7 @@ namespace AspNetDotEnvConfigurationProvider.Test
 					{"Inventory:Provider", "MySql"}
 				};
 			
-			var envConfigSrc = new AspNetDotEnvConfigurationProvider("test.env");
+			var envConfigSrc = new AspNetDotEnvConfigurationProvider(new FileInfo("test.env"));
 
 			envConfigSrc.Load();
 			
@@ -34,15 +34,15 @@ namespace AspNetDotEnvConfigurationProvider.Test
 		[Fact]
 		public void LastVariableAddedWhenMultipleEnvironmentVariablesWithSameNameButDifferentCaseExist()
 		{
-			var dict = new Hashtable()
+			var tempEnvFile = CreateAndLoadToEnvFile(new Hashtable()
 				{
 					{"CommonEnv", "CommonEnvValue1"},
 					{"commonenv", "commonenvValue2"},
 					{"cOMMonEnv", "commonenvValue3"},
-				};
-			var envConfigSrc = new AspNetDotEnvConfigurationProvider("test.env", true);
+				});
+			var envConfigSrc = new AspNetDotEnvConfigurationProvider(new FileInfo(tempEnvFile), true);
 
-			envConfigSrc.Load(dict);
+			envConfigSrc.Load();
 
 			Assert.True(!string.IsNullOrEmpty(envConfigSrc.Get("cOMMonEnv")));
 			Assert.True(!string.IsNullOrEmpty(envConfigSrc.Get("CommonEnv")));
@@ -51,17 +51,34 @@ namespace AspNetDotEnvConfigurationProvider.Test
 		[Fact]
 		public void ReplaceDoubleUnderscoreInEnvironmentVariables()
 		{
-			var dict = new Hashtable()
+
+			var tempEnvFile = CreateAndLoadToEnvFile(new Hashtable()
 				{
 					{"data__ConnectionString", "connection"},
 					{"Data___db1__ProviderName", "System.Data.SqlClient"}
-				};
-			var envConfigSrc = new AspNetDotEnvConfigurationProvider("test.env", true);
+				});
 
-			envConfigSrc.Load(dict);
+			var envConfigSrc = new AspNetDotEnvConfigurationProvider(new FileInfo(tempEnvFile), true);
+
+			envConfigSrc.Load();
 
 			Assert.Equal("connection", envConfigSrc.Get("data:ConnectionString"));
 			Assert.Equal("System.Data.SqlClient", envConfigSrc.Get("Data:_db1:ProviderName"));
+		}
+
+		private string CreateAndLoadToEnvFile(Hashtable dict)
+		{
+			var tempEnvFile = Path.GetFileNameWithoutExtension(Path.GetTempFileName()) + ".env";
+
+			using (var writer = new StreamWriter(File.OpenWrite(tempEnvFile)))
+			{
+				foreach (DictionaryEntry kv in dict)
+				{
+					writer.WriteLine($"{kv.Key}={kv.Value}");
+				}
+			}
+
+			return tempEnvFile;
 		}
 	}
 }
