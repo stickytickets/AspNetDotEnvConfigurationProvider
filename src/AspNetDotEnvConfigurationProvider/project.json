@@ -3,7 +3,7 @@
   "description": "AspNetDotEnvConfigurationProvider Class Library",
   "authors": [ "mkemper" ],
   "tags": [ "" ],
-  "projectUrl": "",
+  "projectUrl": "https://github.com/stickytickets/AspNetDotEnvConfigurationProvider",
   "licenseUrl": "",
 
   "frameworks": {
