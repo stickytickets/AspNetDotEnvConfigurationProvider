@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Microsoft.Extensions.PlatformAbstractions;
+using System.Collections;
 using System.IO;
 using Xunit;
 
@@ -9,6 +10,7 @@ namespace AspNetDotEnvConfigurationProvider.Test
 		[Fact]
 		public void LoadKeyValuePairsFromFile()
 		{
+			
 			var dict = new Hashtable()
 				{
 					{"DefaultConnection:ConnectionString", "TestConnectionString"},
@@ -16,10 +18,11 @@ namespace AspNetDotEnvConfigurationProvider.Test
 					{"Inventory:ConnectionString", "AnotherTestConnectionString"},
 					{"Inventory:Provider", "MySql"}
 				};
-			var envConfigSrc = new AspNetDotEnvConfigurationProvider("test.env");
+
+			var envConfigSrc = new AspNetDotEnvConfigurationProvider(Directory.GetCurrentDirectory() + "\\test.env");
 
 			envConfigSrc.Load();
-
+			
 			Assert.Equal("TestConnectionString", envConfigSrc.Get("defaultconnection:ConnectionString"));
 			Assert.Equal("SqlClient", envConfigSrc.Get("DEFAULTCONNECTION:PROVIDER"));
 			Assert.Equal("AnotherTestConnectionString", envConfigSrc.Get("Inventory:CONNECTIONSTRING"));
