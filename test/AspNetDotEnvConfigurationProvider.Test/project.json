@@ -1,0 +1,22 @@
+﻿{
+	"version": "1.0.0-*",
+	"description": "AspNetDotEnvConfigurationProvider.Test Class Library",
+	"authors": [ "mkemper" ],
+	"tags": [ "" ],
+	"projectUrl": "",
+	"licenseUrl": "",
+
+	"commands": {
+		"test": "xunit.runner.dnx"
+	},
+
+	"dependencies": {
+		"xunit": "2.1.0-*",
+		"xunit.runner.dnx": "2.1.0-rc1-build204"
+	},
+
+	"frameworks": {
+		"dnx451": { },
+		"dnxcore50": { }
+	}
+}
