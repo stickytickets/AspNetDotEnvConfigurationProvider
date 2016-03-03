@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.PlatformAbstractions;
+using System;
 using System.Collections;
 using System.IO;
 using Xunit;
@@ -19,6 +20,7 @@ namespace AspNetDotEnvConfigurationProvider.Test
 					{"Inventory:Provider", "MySql"}
 				};
 
+			Console.WriteLine(Directory.GetCurrentDirectory() + "\\test.env");
 			var envConfigSrc = new AspNetDotEnvConfigurationProvider(Directory.GetCurrentDirectory() + "\\test.env");
 
 			envConfigSrc.Load();
