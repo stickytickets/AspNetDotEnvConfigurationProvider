@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "1.0.0-*",
 	"description": "AspNetDotEnvConfigurationProvider.Test Class Library",
 	"authors": [ "mkemper" ],
@@ -11,12 +11,13 @@
 	},
 
 	"dependencies": {
+		"AspNetDotEnvConfigurationProvider": "1.0.0-*",
+		"System.Collections.NonGeneric": "4.0.1-beta-23516",
 		"xunit": "2.1.0-*",
 		"xunit.runner.dnx": "2.1.0-rc1-build204"
 	},
 
 	"frameworks": {
-		"dnx451": { },
 		"dnxcore50": { }
 	}
 }
