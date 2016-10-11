@@ -1,24 +1,20 @@
-﻿{
-	"version": "1.0.1-*",
-	"description": "AspNetDotEnvConfigurationProvider Class Library",
-	"authors": [ "mkemper" ],
-	"tags": [ "" ],
-	"projectUrl": "https://github.com/stickytickets/AspNetDotEnvConfigurationProvider",
-	"licenseUrl": "",
+{
+  "version": "1.0.0-*",
+
+    "dependencies": {
+        "Microsoft.Extensions.Configuration": "1.0.0",
+        "NETStandard.Library": "1.6.0"
+    },
+
 	"frameworks": {
-		"dnx451": { },
-		"dotnet5.4": {
-			"dependencies": {
-				"Microsoft.CSharp": "4.0.1-beta-23516",
-				"System.Collections": "4.0.11-beta-23516",
-				"System.Collections.NonGeneric": "4.0.1-beta-23516",
-				"System.Linq": "4.0.1-beta-23516",
-				"System.Runtime": "4.0.21-beta-23516",
-				"System.Threading": "4.0.11-beta-23516"
-			}
+		"netstandard1.6": {
+			"imports": "dnxcore50"
+		},
+		"netcoreapp1.0": {
+			"imports": [
+				"dnxcore50",
+				"portable-net45+win8"
+			]
 		}
-	},
-	"dependencies": {
-		"Microsoft.Extensions.Configuration": "1.0.0-rc1-final"
 	}
 }

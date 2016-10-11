@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.PlatformAbstractions;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace AspNetDotEnvConfigurationProvider.Test
 		public void LoadKeyValuePairsFromFile()
 		{
 			
-			var dict = new Hashtable()
+			var dict = new Dictionary<string, string>()
 				{
 					{"DefaultConnection:ConnectionString", "TestConnectionString"},
 					{"DefaultConnection:Provider", "SqlClient"},
@@ -34,7 +35,7 @@ namespace AspNetDotEnvConfigurationProvider.Test
 		[Fact]
 		public void LastVariableAddedWhenMultipleEnvironmentVariablesWithSameNameButDifferentCaseExist()
 		{
-			var tempEnvFile = CreateAndLoadToEnvFile(new Hashtable()
+			var tempEnvFile = CreateAndLoadToEnvFile(new Dictionary<string, string>()
 				{
 					{"CommonEnv", "CommonEnvValue1"},
 					{"commonenv", "commonenvValue2"},
@@ -52,7 +53,7 @@ namespace AspNetDotEnvConfigurationProvider.Test
 		public void ReplaceDoubleUnderscoreInEnvironmentVariables()
 		{
 
-			var tempEnvFile = CreateAndLoadToEnvFile(new Hashtable()
+			var tempEnvFile = CreateAndLoadToEnvFile(new Dictionary<string, string>()
 				{
 					{"data__ConnectionString", "connection"},
 					{"Data___db1__ProviderName", "System.Data.SqlClient"}
@@ -66,13 +67,13 @@ namespace AspNetDotEnvConfigurationProvider.Test
 			Assert.Equal("System.Data.SqlClient", envConfigSrc.Get("Data:_db1:ProviderName"));
 		}
 
-		private string CreateAndLoadToEnvFile(Hashtable dict)
+		private string CreateAndLoadToEnvFile(Dictionary<string, string> dict)
 		{
 			var tempEnvFile = Path.GetFileNameWithoutExtension(Path.GetTempFileName()) + ".env";
 
 			using (var writer = new StreamWriter(File.OpenWrite(tempEnvFile)))
 			{
-				foreach (DictionaryEntry kv in dict)
+				foreach (var kv in dict)
 				{
 					writer.WriteLine($"{kv.Key}={kv.Value}");
 				}
