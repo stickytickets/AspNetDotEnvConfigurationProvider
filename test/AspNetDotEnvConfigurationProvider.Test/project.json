@@ -9,7 +9,7 @@
 		"xunit": "2.2.0-beta2-build3300",
 		"dotnet-test-xunit": "2.2.0-preview2-build1029",
         "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-        "AspNetDotEnvConfigurationProvider": "1.0.0-*"
+        "AspNetDotEnvConfigurationProvider": "2.0.0-*"
 	},
 
 	"testRunner": "xunit",
