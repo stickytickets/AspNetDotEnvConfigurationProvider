@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AspNetDotEnvConfigurationProvider
 {
@@ -11,13 +7,13 @@ namespace AspNetDotEnvConfigurationProvider
 	{
 		public static IConfigurationBuilder AddDotEnvVariables(this IConfigurationBuilder configurationBuilder, FileInfo file, bool optional = false)
 		{
-			configurationBuilder.Add(new AspNetDotEnvConfigurationProvider(file, optional));
+			configurationBuilder.Add(new AspNetDotEnvConfigurationSource(file, optional));
 			return configurationBuilder;
 		}
 
 		public static IConfigurationBuilder AddDotEnvVariables(this IConfigurationBuilder configurationBuilder)
 		{
-			configurationBuilder.Add(new AspNetDotEnvConfigurationProvider(new FileInfo(".env")));
+			configurationBuilder.Add(new AspNetDotEnvConfigurationSource(new FileInfo(".env")));
 			return configurationBuilder;
 		}
 	}

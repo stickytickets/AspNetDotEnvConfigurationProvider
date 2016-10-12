@@ -17,3 +17,4 @@ build_result/
 project.lock.json
 npm-debug.log
 *.xproj.user
+.vscode

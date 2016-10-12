@@ -74,4 +74,21 @@ namespace AspNetDotEnvConfigurationProvider
 			return Data[key];
 		} 
 	}
+
+	public class AspNetDotEnvConfigurationSource : IConfigurationSource
+	{
+		private readonly FileInfo envFile;
+		private readonly bool optional = false;
+
+		public AspNetDotEnvConfigurationSource(FileInfo envFile, bool optional = false)
+		{
+			this.envFile = envFile;
+			this.optional = true;
+		}
+
+		public IConfigurationProvider Build(IConfigurationBuilder builder)
+		{
+			return new AspNetDotEnvConfigurationProvider(envFile, optional);
+		}
+	}
 }
